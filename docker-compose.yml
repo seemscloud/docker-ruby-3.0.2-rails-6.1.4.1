@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  apache2:
+    build:
+      context: ./apache2
+      args:
+        LISTEN_PORT: "8181"
+    container_name: apache2
+  rails:
+    build:
+      context: ./rails
+      args:
+        RUBY_VERSION: "3.0.2"
+        NODE_VERSION: "14.17.5"
+        YARN_VERSION: "1.22.11"
+    container_name: rails
+    environment:
+      LISTEN_PORT: 3000
+      ENVIRONMENT: development
+    ports:
+      - "3000:3000"
+  postgresql:
+    build:
+      context: ./postgresql
+    container_name: postgresql
+  redis:
+    build:
+      context: ./redis
+      args:
+        VERSION: "6.2.5"
+    container_name: redis
+    environment:
+      LISTEN_PORT: "6379"
+      DB_FILENAME: "example.rdb"
+  requester:
+    build:
+      context: ./requester
+    container_name: requester
+    environment:
+      REQ_HOST: "apache2"
+      REQ_PORT: "8181"
