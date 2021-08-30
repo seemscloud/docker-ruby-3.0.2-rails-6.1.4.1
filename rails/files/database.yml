@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: utf-8
-  host: postgres
+  host: postgresql
   port: 5432
   database: rails
   username: rails

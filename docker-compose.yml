@@ -2,12 +2,14 @@ version: '3.9'
 
 services:
   apache2:
+    hostname: apache2
     build:
       context: ./apache2
       args:
         LISTEN_PORT: "8181"
     container_name: apache2
   rails:
+    hostname: rails
     build:
       context: ./rails
       args:
@@ -20,11 +22,24 @@ services:
       ENVIRONMENT: development
     ports:
       - "3000:3000"
+    volumes:
+      - ${PWD}/rails/files/database.yml:/opt/app/config/database.yml:ro
   postgresql:
+    hostname: postgresql
     build:
       context: ./postgresql
+      args:
+        VERSION: "13.4"
     container_name: postgresql
+    environment:
+      LISTEN_PORT: "5432"
+      PG_DATABASE: "rails"
+      PG_USERNAME: "rails"
+    volumes:
+      - ${PWD}/postgresql/files/pg_hba.conf:/opt/app/pg_hba.conf:ro
+      - ${PWD}/postgresql/files/postgresql.conf:/opt/app/postgresql.conf:ro
   redis:
+    hostname: redis
     build:
       context: ./redis
       args:
@@ -34,6 +49,7 @@ services:
       LISTEN_PORT: "6379"
       DB_FILENAME: "example.rdb"
   requester:
+    hostname: requester
     build:
       context: ./requester
     container_name: requester
