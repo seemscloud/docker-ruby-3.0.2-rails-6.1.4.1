@@ -6,6 +6,6 @@ while true; do
 done
 
 while true; do
-  curl "${REQ_HOST}:${REQ_PORT}" -o /dev/null --silent
+  curl http://"${REQ_HOST}:${REQ_PORT}" -o /dev/null
   sleep 1
 done

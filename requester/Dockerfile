@@ -7,4 +7,4 @@ RUN apt-get update && \
 
 COPY ./entrypoint.sh .
 
-CMD ["/bin/bash", "entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
